@@ -16,25 +16,39 @@ namespace Blog.API.Repositories
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
             var sql = "SELECT * FROM Category";
-            var categories = new List<Category>();
+            //var categories = new List<Category>();
 
-            using (_connection)
-            {
-                await _connection.OpenAsync();
+            //using (_connection)
+            //{
+            //await _connection.OpenAsync();
 
-                var reader = await _connection.ExecuteReaderAsync(sql);
+            //Usando Dapper
+            //var categories = (await _connection.QueryAsync<Category>(sql)).ToList();
 
-                while (await reader.ReadAsync())
-                {
-                    var category = new Category(
-                        reader["Name"].ToString(),
-                        reader["Slug"].ToString()
-                    );
+            //Usando ADO.Net
+            //var reader = await _connection.ExecuteReaderAsync(sql);
 
-                    categories.Add(category);
-                }
-                return categories;
-            }
+            //while (await reader.ReadAsync())
+            //{
+            //    var category = new Category(
+            //        reader["Name"].ToString(),
+            //        reader["Slug"].ToString()
+            //    );
+
+            //    categories.Add(category);
+            //}
+            return (await _connection.QueryAsync<Category>(sql)).ToList();
+            //}
+        }
+
+        public async Task CreateCategoryAsync(Category category)
+        {
+            var sql = "INSERT INTO Category (Name, Slug) VALUES (@Name, @Slug)";
+            //using (_connection)
+            //{
+            //await _connection.OpenAsync();
+            await _connection.ExecuteAsync(sql, new { category.Name, category.Slug });
+            //}
         }
     }
 }

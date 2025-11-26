@@ -1,9 +1,15 @@
+using Blog.API.Data;
+using Blog.API.Repositories;
+using Blog.API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddSingleton<Blog.API.Data.ConnectionDB>();
+builder.Services.AddSingleton<ConnectionDB>();
+builder.Services.AddSingleton<CategoryRepository>();
+builder.Services.AddSingleton<CategoryService>();
 
 var app = builder.Build();
 
