@@ -13,18 +13,18 @@ namespace Blog.API.Repositories
             _connection = connectionDB.GetConnection();
         }
 
-        public List<Category> GetAllCategories()
+        public async Task<List<Category>> GetAllCategoriesAsync()
         {
             var sql = "SELECT * FROM Category";
             var categories = new List<Category>();
 
             using (_connection)
             {
-                _connection.Open();
+                await _connection.OpenAsync();
 
-                var reader = _connection.ExecuteReader(sql);
+                var reader = await _connection.ExecuteReaderAsync(sql);
 
-                while (reader.Read())
+                while (await reader.ReadAsync())
                 {
                     var category = new Category(
                         reader["Name"].ToString(),

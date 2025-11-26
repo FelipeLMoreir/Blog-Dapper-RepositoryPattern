@@ -11,9 +11,9 @@ namespace Blog.API.Services
         {
             _categoryRepoitory = categoryrepository;
         }
-        public List<Category> GetAllCategories()
+        public async Task<List<Category>> GetAllCategoriesAsync()
         {
-            return _categoryRepoitory.GetAllCategories();
+            return await _categoryRepoitory.GetAllCategoriesAsync();
         }
 
     }

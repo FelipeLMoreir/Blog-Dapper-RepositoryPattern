@@ -25,9 +25,9 @@ namespace Blog.API.Controllers
             return Ok("Online");
         }
         [HttpGet("GetAll")]
-        public ActionResult<List<Category>> GetAllCategories()
+        public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
-            var categories = _categoryService.GetAllCategories();
+            var categories = await _categoryService.GetAllCategoriesAsync();
 
             return Ok(categories);
         }
@@ -35,12 +35,6 @@ namespace Blog.API.Controllers
         [HttpPost("Create")]
         public ActionResult CreateCategory(Category category)
         {
-            var sql = "INSERT INTO Category (Name, Slug) VALUES (@Name, @Slug)";
-            using (_connection)
-            {
-                _connection.Open();
-                _connection.Execute(sql, new { category.Name, category.Slug });
-            }
             return Ok();
         }
     }
