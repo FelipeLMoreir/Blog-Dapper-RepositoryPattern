@@ -2,7 +2,8 @@
 {
     public class CategoryResponseDTO
     {
-        public string Name { get; private set; }
-        public string Slug { get; private set; }
+        public string Name { get; set; }
+        public string Slug { get; set; }
+
     }
 }

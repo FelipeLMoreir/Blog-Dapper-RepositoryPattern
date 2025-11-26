@@ -1,5 +1,6 @@
 ﻿using Azure.Core.Pipeline;
 using Blog.API.Models;
+using Blog.API.Models.DTOs;
 using Blog.API.Repositories;
 
 namespace Blog.API.Services
@@ -11,13 +12,17 @@ namespace Blog.API.Services
         {
             _categoryRepoitory = categoryrepository;
         }
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<CategoryResponseDTO>> GetAllCategoriesAsync()
         {
             return await _categoryRepoitory.GetAllCategoriesAsync();
         }
-        public async Task CreateCategoryAsync(Category category)
+        public async Task CreateCategoryAsync(CategoryRequestDTO category)
         {
-            await _categoryRepoitory.CreateCategoryAsync(category);
+            var newCategory = new Category(
+                                           category.Name,
+                                           category.Name.ToLower().Replace(" ", "-"));
+
+            await _categoryRepoitory.CreateCategoryAsync(newCategory);
         }
     }
 }

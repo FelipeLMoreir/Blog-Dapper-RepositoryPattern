@@ -1,5 +1,6 @@
 ﻿using Blog.API.Data;
 using Blog.API.Models;
+using Blog.API.Models.DTOs;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
@@ -13,9 +14,9 @@ namespace Blog.API.Repositories
             _connection = connectionDB.GetConnection();
         }
 
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<CategoryResponseDTO>> GetAllCategoriesAsync()
         {
-            var sql = "SELECT * FROM Category";
+            var sql = "SELECT Name, Slug FROM Category";
             //var categories = new List<Category>();
 
             //using (_connection)
@@ -37,7 +38,7 @@ namespace Blog.API.Repositories
 
             //    categories.Add(category);
             //}
-            return (await _connection.QueryAsync<Category>(sql)).ToList();
+            return (await _connection.QueryAsync<CategoryResponseDTO>(sql)).ToList();
             //}
         }
 
