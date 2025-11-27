@@ -1,8 +1,10 @@
 ﻿//using System.Text.Json.Serialization;
 
+using Blog.API.Models.InterfaceModel;
+
 namespace Blog.API.Models
 {
-    public class Category
+    public class Category : ICategory
     {
         public int Id { get; private set; }
         public string Name { get; private set; }

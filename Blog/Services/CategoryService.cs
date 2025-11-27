@@ -2,10 +2,11 @@
 using Blog.API.Models;
 using Blog.API.Models.DTOs;
 using Blog.API.Repositories;
+using Blog.API.Services.InterfaceService;
 
 namespace Blog.API.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
         private CategoryRepository _categoryRepoitory;
         public CategoryService(CategoryRepository categoryrepository)
