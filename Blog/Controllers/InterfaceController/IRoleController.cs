@@ -5,10 +5,9 @@ namespace Blog.API.Controllers.InterfaceController
 {
     public interface IRoleController
     {
-        Task<ActionResult<List<RoleResponseDTO>>> GetAll();
-        Task<ActionResult<RoleResponseDTO>> GetById(int id);
-        Task<ActionResult> Create(RoleRequestDTO dto);
-        Task<ActionResult> Update(int id, RoleRequestDTO dto);
-        Task<ActionResult> Delete(int id);
+        Task<ActionResult<List<RoleResponseDTO>>> GetAllRoles();
+        Task<ActionResult> CreateRole(RoleRequestDTO dto);
+        Task<ActionResult> UpdateRole(int id, RoleRequestDTO dto);
+        Task<ActionResult> DeleteRole(int id);
     }
 }

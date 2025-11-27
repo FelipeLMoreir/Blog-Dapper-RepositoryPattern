@@ -1,6 +1,7 @@
 ﻿using Blog.API.Controllers.InterfaceController;
 using Blog.API.Models.DTOs;
 using Blog.API.Services;
+using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
@@ -14,6 +15,19 @@ namespace Blog.API.Controllers
         public UserController(UserService userService)
         {
             _userService = userService;
+        }
+
+        [HttpGet]
+        public ActionResult HeartBeat()
+        {
+            return Ok("Online");
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<UserResponseDTO>>> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(users);
         }
 
         [HttpPost("Create")]

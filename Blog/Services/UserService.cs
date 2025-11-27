@@ -1,6 +1,7 @@
 ﻿using Blog.API.Models;
 using Blog.API.Models.DTOs;
 using Blog.API.Repositories;
+using Blog.API.Repositories.InterfaceRepository;
 using Blog.API.Services.InterfaceService;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,28 +10,32 @@ namespace Blog.API.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserRepository _userRepository;
+        private UserRepository _userRepository;
 
         public UserService(UserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-
-        public async Task CreateUserAsync(UserRequestDTO dto)
+        public async Task<List<UserResponseDTO>> GetAllUsersAsync()
         {
-            var slug = dto.Name
+            return await _userRepository.GetAllUsersAsync();
+        }
+
+        public async Task CreateUserAsync(UserRequestDTO userDto)
+        {
+            var slug = userDto.Name
                 .ToLower()
                 .Trim()
                 .Replace(" ", "-");
 
-            var passwordHash = HashPassword(dto.PasswordPlain);
+            var passwordHash = HashPassword(userDto.PasswordPlain);
 
             var user = new User(
-                dto.Name,
-                dto.Email,
+                userDto.Name,
+                userDto.Email,
                 passwordHash,
-                dto.Bio,
-                dto.Image,
+                userDto.Bio,
+                userDto.Image,
                 slug
             );
 
@@ -42,7 +47,7 @@ namespace Blog.API.Services
             using var sha = SHA256.Create();
             var bytes = Encoding.UTF8.GetBytes(password);
             var hash = sha.ComputeHash(bytes);
-            return Convert.ToHexString(hash); // exemplo simples
+            return Convert.ToHexString(hash); 
         }
     }
 }

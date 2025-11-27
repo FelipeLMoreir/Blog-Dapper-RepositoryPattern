@@ -59,23 +59,14 @@ namespace Blog.API.Repositories
                         SET Name = @Name, Slug = @Slug
                         WHERE Id = @Id";
 
-            var rows = await _connection.ExecuteAsync(sql, new
-            {
-                Id = id,
-                category.Name,
-                category.Slug
-            });
-
-            return rows; 
+            return await _connection.ExecuteAsync(sql, new { Id = id, category.Name, category.Slug });
         }
 
         public async Task<int> DeleteCategoryAsync(int id)
         {
             var sql = "DELETE FROM Category WHERE Id = @Id";
 
-            var rows = await _connection.ExecuteAsync(sql, new { Id = id });
-
-            return rows; 
+            return await _connection.ExecuteAsync(sql, new { Id = id });
         }
     }
 }

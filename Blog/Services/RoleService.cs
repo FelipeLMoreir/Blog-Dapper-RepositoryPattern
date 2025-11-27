@@ -1,5 +1,6 @@
 ﻿using Blog.API.Models;
 using Blog.API.Models.DTOs;
+using Blog.API.Repositories;
 using Blog.API.Repositories.InterfaceRepository;
 using Blog.API.Services.InterfaceService;
 
@@ -7,38 +8,38 @@ namespace Blog.API.Services
 {
     public class RoleService : IRoleService
     {
-        private readonly IRoleRepository _roleRepository;
-        public RoleService(IRoleRepository roleRepository)
+        private RoleRepository _roleRepository;
+        public RoleService(RoleRepository roleRepository)
         {
             _roleRepository = roleRepository;
         }
 
-        public Task<List<RoleResponseDTO>> GetAllAsync()
-            => _roleRepository.GetAllAsync();
-
-        public Task<RoleResponseDTO?> GetByIdAsync(int id)
-            => _roleRepository.GetByIdAsync(id);
-
-        public async Task CreateAsync(RoleRequestDTO dto)
+        public async Task<List<RoleResponseDTO>> GetAllRolesAsync()
         {
-            var role = new Role(
-                dto.Name,
-                dto.Name.ToLower().Replace(" ", "-"));
-            await _roleRepository.CreateAsync(role);
+            return await _roleRepository.GetAllRolesAsync();
         }
 
-        public async Task<bool> UpdateAsync(int id, RoleRequestDTO dto)
+        public async Task CreateRoleAsync(RoleRequestDTO role)
         {
-            var role = new Role(
-                dto.Name,
-                dto.Name.ToLower().Replace(" ", "-"));
-            var rows = await _roleRepository.UpdateAsync(id, role);
+            var newRole = new Role(
+                role.Name,
+                role.Name.ToLower().Replace(" ", "-"));
+            await _roleRepository.CreateRoleAsync(newRole);
+        }
+
+        public async Task<bool> UpdateRoleAsync(int id, RoleRequestDTO role)
+        {
+            var roleToUpdate = new Role(
+                role.Name,
+                role.Name.ToLower().Replace(" ", "-"));
+
+            var rows = await _roleRepository.UpdateRoleAsync(id, roleToUpdate);
             return rows > 0;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteRoleAsync(int id)
         {
-            var rows = await _roleRepository.DeleteAsync(id);
+            var rows = await _roleRepository.DeleteRoleAsync(id);
             return rows > 0;
         }
     }

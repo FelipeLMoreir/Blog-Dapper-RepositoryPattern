@@ -34,7 +34,7 @@ namespace Blog.API.Controllers
             return Ok(categories);
         }
 
-        [HttpPost("Create")]
+        [HttpPost("CreateTag")]
         public async Task<ActionResult> CreateCategory(CategoryRequestDTO category)
         {
             await _categoryService.CreateCategoryAsync(category);
@@ -48,7 +48,7 @@ namespace Blog.API.Controllers
             var updated = await _categoryService.UpdateCategoryAsync(id, category);
 
             if (!updated)
-                return NotFound($"Category with Id {id} not found.");
+                return NotFound();
 
             return NoContent();
         }
@@ -59,7 +59,7 @@ namespace Blog.API.Controllers
             var deleted = await _categoryService.DeleteCategoryAsync(id);
 
             if (!deleted)
-                return NotFound($"Category with Id {id} not found.");
+                return NotFound();
 
             return NoContent();
         }

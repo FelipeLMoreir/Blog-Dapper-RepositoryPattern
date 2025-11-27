@@ -5,10 +5,9 @@ namespace Blog.API.Repositories.InterfaceRepository
 {
     public interface IRoleRepository
     {
-        Task<List<RoleResponseDTO>> GetAllAsync();
-        Task<RoleResponseDTO?> GetByIdAsync(int id);
-        Task CreateAsync(Role role);
-        Task<int> UpdateAsync(int id, Role role);
-        Task<int> DeleteAsync(int id);
+        Task<List<RoleResponseDTO>> GetAllRolesAsync();
+        Task CreateRoleAsync(Role role);
+        Task<int> UpdateRoleAsync(int id, Role role);
+        Task<int> DeleteRoleAsync(int id);
     }
 }

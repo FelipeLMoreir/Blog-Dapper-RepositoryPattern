@@ -15,16 +15,10 @@ namespace Blog.API.Repositories
             _connection = connectionDB.GetConnection();
         }
 
-        public async Task<List<TagResponseDTO>> GetAllAsync()
+        public async Task<List<TagResponseDTO>> GetAllTagsAsync()
         {
             var sql = "SELECT Name, Slug FROM Tag";
             return (await _connection.QueryAsync<TagResponseDTO>(sql)).ToList();
-        }
-
-        public async Task<TagResponseDTO?> GetByIdAsync(int id)
-        {
-            var sql = "SELECT Name, Slug FROM Tag WHERE Id = @Id";
-            return await _connection.QueryFirstOrDefaultAsync<TagResponseDTO>(sql, new { Id = id });
         }
 
         public async Task CreateAsync(Tag tag)

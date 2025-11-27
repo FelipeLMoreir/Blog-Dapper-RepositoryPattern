@@ -15,7 +15,13 @@ namespace Blog.API.Repositories
         {
             _connection = connectionDB.GetConnection();
         }
-
+        public async Task<List<UserResponseDTO>> GetAllUsersAsync()
+        {
+            var sql = "SELECT * FROM [User]";
+         
+            return (await _connection.QueryAsync<UserResponseDTO>(sql)).ToList();
+            
+        }
         public async Task CreateUserAsync(User user)
         {
             const string sql = @"

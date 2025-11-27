@@ -5,7 +5,7 @@ namespace Blog.API.Controllers.InterfaceController
 {
     public interface IUserController
     {
-        [HttpPost("Create")]
+        Task<ActionResult<List<UserResponseDTO>>> GetAllUsers();
         Task<ActionResult> CreateUser([FromBody] UserRequestDTO dto);
 
     }

@@ -15,40 +15,37 @@ namespace Blog.API.Controllers
             _tagService = tagService;
         }
 
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<List<TagResponseDTO>>> GetAll()
+        [HttpGet]
+        public ActionResult HeartBeat()
         {
-            var tags = await _tagService.GetAllAsync();
+            return Ok("Online");
+        }
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<TagResponseDTO>>> GetAllTags()
+        {
+            var tags = await _tagService.GetAllTagsAsync();
             return Ok(tags);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<TagResponseDTO>> GetById(int id)
+        [HttpPost("CreateRole")]
+        public async Task<ActionResult> CreateTag(TagRequestDTO dto)
         {
-            var tag = await _tagService.GetByIdAsync(id);
-            if (tag == null) return NotFound();
-            return Ok(tag);
-        }
-
-        [HttpPost("Create")]
-        public async Task<ActionResult> Create(TagRequestDTO dto)
-        {
-            await _tagService.CreateAsync(dto);
+            await _tagService.CreateTagAsync(dto);
             return Created(string.Empty, null);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, TagRequestDTO dto)
+        public async Task<ActionResult> UpdateTag(int id, TagRequestDTO dto)
         {
-            var updated = await _tagService.UpdateAsync(id, dto);
+            var updated = await _tagService.UpdateTagAsync(id, dto);
             if (!updated) return NotFound();
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteTag(int id)
         {
-            var deleted = await _tagService.DeleteAsync(id);
+            var deleted = await _tagService.DeleteTagAsync(id);
             if (!deleted) return NotFound();
             return NoContent();
         }

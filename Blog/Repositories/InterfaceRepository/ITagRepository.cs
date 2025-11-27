@@ -5,8 +5,7 @@ namespace Blog.API.Repositories.InterfaceRepository
 {
     public interface ITagRepository
     {
-        Task<List<TagResponseDTO>> GetAllAsync();
-        Task<TagResponseDTO?> GetByIdAsync(int id);
+        Task<List<TagResponseDTO>> GetAllTagsAsync();
         Task CreateAsync(Tag tag);
         Task<int> UpdateAsync(int id, Tag tag);
         Task<int> DeleteAsync(int id);

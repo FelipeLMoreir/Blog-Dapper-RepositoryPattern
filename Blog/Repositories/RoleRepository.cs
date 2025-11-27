@@ -15,25 +15,20 @@ namespace Blog.API.Repositories
             _connection = connectionDB.GetConnection();
         }
 
-        public async Task<List<RoleResponseDTO>> GetAllAsync()
+        public async Task<List<RoleResponseDTO>> GetAllRolesAsync()
         {
             var sql = "SELECT Name, Slug FROM Role";
             return (await _connection.QueryAsync<RoleResponseDTO>(sql)).ToList();
         }
 
-        public async Task<RoleResponseDTO?> GetByIdAsync(int id)
-        {
-            var sql = "SELECT Name, Slug FROM Role WHERE Id = @Id";
-            return await _connection.QueryFirstOrDefaultAsync<RoleResponseDTO>(sql, new { Id = id });
-        }
 
-        public async Task CreateAsync(Role role)
+        public async Task CreateRoleAsync(Role role)
         {
             var sql = "INSERT INTO Role (Name, Slug) VALUES (@Name, @Slug)";
             await _connection.ExecuteAsync(sql, new { role.Name, role.Slug });
         }
 
-        public async Task<int> UpdateAsync(int id, Role role)
+        public async Task<int> UpdateRoleAsync(int id, Role role)
         {
             var sql = @"UPDATE Role 
                         SET Name = @Name, Slug = @Slug 
@@ -41,7 +36,7 @@ namespace Blog.API.Repositories
             return await _connection.ExecuteAsync(sql, new { Id = id, role.Name, role.Slug });
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteRoleAsync(int id)
         {
             var sql = "DELETE FROM Role WHERE Id = @Id";
             return await _connection.ExecuteAsync(sql, new { Id = id });

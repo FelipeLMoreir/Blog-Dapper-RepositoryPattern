@@ -15,40 +15,38 @@ namespace Blog.API.Controllers
             _roleService = roleService;
         }
 
-        [HttpGet("GetAll")]
-        public async Task<ActionResult<List<RoleResponseDTO>>> GetAll()
+        [HttpGet]
+        public ActionResult HeartBeat()
         {
-            var roles = await _roleService.GetAllAsync();
+            return Ok("Online");
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<ActionResult<List<RoleResponseDTO>>> GetAllRoles()
+        {
+            var roles = await _roleService.GetAllRolesAsync();
             return Ok(roles);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<RoleResponseDTO>> GetById(int id)
+        [HttpPost("CreateTag")]
+        public async Task<ActionResult> CreateRole(RoleRequestDTO dto)
         {
-            var role = await _roleService.GetByIdAsync(id);
-            if (role == null) return NotFound();
-            return Ok(role);
-        }
-
-        [HttpPost("Create")]
-        public async Task<ActionResult> Create(RoleRequestDTO dto)
-        {
-            await _roleService.CreateAsync(dto);
+            await _roleService.CreateRoleAsync(dto);
             return Created(string.Empty, null);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, RoleRequestDTO dto)
+        public async Task<ActionResult> UpdateRole(int id, RoleRequestDTO dto)
         {
-            var updated = await _roleService.UpdateAsync(id, dto);
+            var updated = await _roleService.UpdateRoleAsync(id, dto);
             if (!updated) return NotFound();
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteRole(int id)
         {
-            var deleted = await _roleService.DeleteAsync(id);
+            var deleted = await _roleService.DeleteRoleAsync(id);
             if (!deleted) return NotFound();
             return NoContent();
         }
