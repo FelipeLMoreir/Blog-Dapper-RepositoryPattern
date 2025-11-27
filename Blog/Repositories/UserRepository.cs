@@ -7,7 +7,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Blog.API.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly SqlConnection _connection;
 

@@ -1,4 +1,5 @@
-﻿using Blog.API.Models.DTOs;
+﻿using Blog.API.Controllers.InterfaceController;
+using Blog.API.Models.DTOs;
 using Blog.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace Blog.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ControllerBase, IUserController
     {
         private readonly UserService _userService;
 

@@ -1,12 +1,13 @@
 ﻿using Blog.API.Models;
 using Blog.API.Models.DTOs;
 using Blog.API.Repositories;
+using Blog.API.Services.InterfaceService;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Blog.API.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly UserRepository _userRepository;
 

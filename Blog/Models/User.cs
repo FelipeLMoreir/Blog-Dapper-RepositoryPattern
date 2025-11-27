@@ -1,11 +1,12 @@
 ﻿using Blog.API.Controllers.InterfaceController;
 using Blog.API.Models.DTOs;
+using Blog.API.Models.InterfaceModel;
 using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Models
 {
-    public class User
+    public class User : IUser
     {
         public int Id { get; private set; }
         public string Name { get; private set; }
