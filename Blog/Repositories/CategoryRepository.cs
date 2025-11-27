@@ -10,63 +10,109 @@ namespace Blog.API.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly SqlConnection _connection;
-        public CategoryRepository(ConnectionDB connectionDB)
+
+        private ILogger<CategoryRepository> _logger;
+
+        public CategoryRepository(ConnectionDB connection, ILogger<CategoryRepository> logger)
         {
-            _connection = connectionDB.GetConnection();
+            _connection = connection.GetConnection();
+            _logger = logger;
         }
 
         public async Task<List<CategoryResponseDTO>> GetAllCategoriesAsync()
         {
-            var sql = "SELECT Name, Slug FROM Category";
-            //var categories = new List<Category>();
+            try
+            {
+                var sql = "SELECT Name, Slug FROM Category";
 
-            //using (_connection)
-            //{
-            //await _connection.OpenAsync();
+                return (await _connection.QueryAsync<CategoryResponseDTO>(sql)).ToList();
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
+            //var sql = "SELECT Name, Slug FROM Category";
+            ////var categories = new List<Category>();
 
-            //Usando Dapper
-            //var categories = (await _connection.QueryAsync<Category>(sql)).ToList();
+            ////using (_connection)
+            ////{
+            ////await _connection.OpenAsync();
 
-            //Usando ADO.Net
-            //var reader = await _connection.ExecuteReaderAsync(sql);
+            ////Usando Dapper
+            ////var categories = (await _connection.QueryAsync<Category>(sql)).ToList();
 
-            //while (await reader.ReadAsync())
-            //{
-            //    var category = new Category(
-            //        reader["Name"].ToString(),
-            //        reader["Slug"].ToString()
-            //    );
+            ////Usando ADO.Net
+            ////var reader = await _connection.ExecuteReaderAsync(sql);
 
-            //    categories.Add(category);
-            //}
-            return (await _connection.QueryAsync<CategoryResponseDTO>(sql)).ToList();
-            //}
+            ////while (await reader.ReadAsync())
+            ////{
+            ////    var category = new Category(
+            ////        reader["Name"].ToString(),
+            ////        reader["Slug"].ToString()
+            ////    );
+
+            ////    categories.Add(category);
+            ////}
+            //return (await _connection.QueryAsync<CategoryResponseDTO>(sql)).ToList();
+            ////}
         }
 
         public async Task CreateCategoryAsync(Category category)
         {
-            var sql = "INSERT INTO Category (Name, Slug) VALUES (@Name, @Slug)";
-            //using (_connection)
-            //{
-            //await _connection.OpenAsync();
-            await _connection.ExecuteAsync(sql, new { category.Name, category.Slug });
-            //}
+            try
+            {
+                var sql = "INSERT INTO Category (Name, Slug) VALUES (@Name, @Slug)";
+
+                await _connection.ExecuteAsync(sql, new { category.Name, category.Slug });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
         }
 
-        public async Task<int> UpdateCategoryAsync(int id, Category category)
+        public async Task<Category?> GetCategoryByIdAsync(int id)
         {
-            var sql = @"UPDATE Category 
-                        SET Name = @Name, Slug = @Slug
-                        WHERE Id = @Id";
+            try
+            {
+                var sql = "SELECT Id, Name, Slug FROM Category WHERE Id = @Id";
 
-            return await _connection.ExecuteAsync(sql, new { Id = id, category.Name, category.Slug });
+                return await _connection.QueryFirstOrDefaultAsync<Category>(sql, new { Id = id });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
         }
 
-        public async Task<int> DeleteCategoryAsync(int id)
+        public async Task UpdateCategoryAsync(int id, Category category)
         {
-            var sql = "DELETE FROM Category WHERE Id = @Id";
+            try
+            {
+                var sql = "UPDATE Category SET Name = @Name, Slug = @Slug WHERE Id = @Id";
 
-            return await _connection.ExecuteAsync(sql, new { Id = id });
+                await _connection.ExecuteAsync(sql, new { category.Name, category.Slug, Id = id });
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception(sqlEx.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.StackTrace);
+            }
         }
     }
 }

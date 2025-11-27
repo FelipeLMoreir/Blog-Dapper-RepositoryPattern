@@ -1,4 +1,5 @@
-﻿using Blog.API.Models.DTOs;
+﻿using Blog.API.Models;
+using Blog.API.Models.DTOs;
 
 namespace Blog.API.Services.InterfaceService
 {
@@ -6,7 +7,7 @@ namespace Blog.API.Services.InterfaceService
     {
         Task<List<CategoryResponseDTO>> GetAllCategoriesAsync();
         Task CreateCategoryAsync(CategoryRequestDTO category);
-        Task<bool> UpdateCategoryAsync(int id, CategoryRequestDTO category);
-        Task<bool> DeleteCategoryAsync(int id);
+        Task UpdateCategoryAsync(int id, CategoryRequestDTO category);
+        Task<Category?> GetCategoryByIdAsync(int id);
     }
 }

@@ -7,7 +7,7 @@ namespace Blog.API.Repositories.InterfaceRepository
     {
         Task<List<CategoryResponseDTO>> GetAllCategoriesAsync();
         Task CreateCategoryAsync(Category category);
-        Task<int> UpdateCategoryAsync(int id, Category category);
-        Task<int> DeleteCategoryAsync(int id);
+        Task<Category?> GetCategoryByIdAsync(int id);
+        Task UpdateCategoryAsync(int id, Category category);
     }
 }

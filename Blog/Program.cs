@@ -8,12 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ConnectionDB>();
+
 builder.Services.AddSingleton<CategoryRepository>();
 builder.Services.AddSingleton<CategoryService>();
+
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<UserService>();
+
 builder.Services.AddSingleton<RoleRepository>();
 builder.Services.AddSingleton<RoleService>();
+
 builder.Services.AddSingleton<TagRepository>();
 builder.Services.AddSingleton<TagService>();
 

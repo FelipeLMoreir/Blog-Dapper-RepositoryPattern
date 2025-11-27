@@ -6,9 +6,10 @@ namespace Blog.API.Controllers.InterfaceController
     public interface ICategoryController
     {
         ActionResult HeartBeat();
-        Task<ActionResult<List<CategoryResponseDTO>>> GetAllCategories();
+        Task<ActionResult<List<CategoryResponseDTO>>> GetAllCategoriesAsync();
         Task<ActionResult> CreateCategory(CategoryRequestDTO category);
         Task<ActionResult> UpdateCategory(int id, CategoryRequestDTO category);
         Task<ActionResult> DeleteCategory(int id);
+
     }
 }

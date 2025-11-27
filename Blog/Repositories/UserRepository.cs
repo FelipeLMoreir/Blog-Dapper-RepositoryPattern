@@ -51,7 +51,9 @@ namespace Blog.API.Repositories
                     Slug = @Slug
                 WHERE Id = @Id;";
 
-            return await _connection.ExecuteAsync(sql, new { Id = id,
+            return await _connection.ExecuteAsync(sql, new
+            {
+                Id = id,
                 user.Name,
                 user.Email,
                 user.PasswordHash,
@@ -68,5 +70,30 @@ namespace Blog.API.Repositories
 
             return await _connection.ExecuteAsync(sql, new { Id = id });
         }
+
+        public async Task<List<User>> GetAllUsersRoles()
+        {
+            var sql = @"
+                SELECT u.Name AS UserName, r.Name AS RoleName
+                FROM [User] u
+                JOIN UserRole ur ON u.Id = ur.UserId
+                JOIN Role r ON ur.RoleId = r.Id;";
+            IEnumerable<User> userRoles = new List<User>();
+
+            using (var con = _connection)
+            {
+                userRoles = await con.QueryAsync<User, Role, User>(
+                    sql,
+                    (user, role) =>
+                    {
+                        user.Roles.Add(role);
+                        return user;
+                    },
+                splitOn: "Id"
+                );
+            }
+            return userRoles.ToList();
+        }
+
     }
 }

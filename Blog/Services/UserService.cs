@@ -10,9 +10,9 @@ namespace Blog.API.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserRepository _userRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(UserRepository userRepository)
         {
             _userRepository = userRepository;
         }
