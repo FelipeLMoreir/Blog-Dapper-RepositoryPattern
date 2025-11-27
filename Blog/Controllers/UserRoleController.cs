@@ -1,6 +1,7 @@
 ﻿using Blog.API.Controllers.InterfaceController;
 using Blog.API.Models.DTOs;
 using Blog.API.Services;
+using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
@@ -9,25 +10,11 @@ namespace Blog.API.Controllers
     [ApiController]
     public class UserRoleController : ControllerBase, IUserRoleController
     {
-        private readonly UserRoleService _userRoleService;
+        private readonly IUserRoleService _userRoleService;
 
-        public UserRoleController(UserRoleService userRoleService)
+        public UserRoleController(IUserRoleService userRoleService)
         {
             _userRoleService = userRoleService;
-        }
-
-        [HttpPost("Add")]
-        public async Task<ActionResult> AddUserRole([FromBody] UserRoleRequestDTO dto)
-        {
-            await _userRoleService.AddUserRoleAsync(dto);
-            return Created(string.Empty, null);
-        }
-
-        [HttpDelete("Remove")]
-        public async Task<ActionResult> RemoveUserRole([FromBody] UserRoleRequestDTO dto)
-        {
-            await _userRoleService.RemoveUserRoleAsync(dto);
-            return NoContent();
         }
 
         [HttpGet("ByUser/{userId:int}")]

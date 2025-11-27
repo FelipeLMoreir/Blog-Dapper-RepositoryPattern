@@ -1,5 +1,6 @@
 ﻿using Blog.API.Models;
 using Blog.API.Models.DTOs;
+using Blog.API.Repositories;
 using Blog.API.Repositories.InterfaceRepository;
 using Blog.API.Services.InterfaceService;
 
@@ -12,17 +13,6 @@ namespace Blog.API.Services
         public UserRoleService(IUserRoleRepository userRoleRepository)
         {
             _userRoleRepository = userRoleRepository;
-        }
-
-        public async Task AddUserRoleAsync(UserRoleRequestDTO dto)
-        {
-            var userRole = new UserRole(dto.UserId, dto.RoleId);
-            await _userRoleRepository.AddUserRoleAsync(userRole);
-        }
-
-        public async Task RemoveUserRoleAsync(UserRoleRequestDTO dto)
-        {
-            await _userRoleRepository.RemoveUserRoleAsync(dto.UserId, dto.RoleId);
         }
 
         public Task<List<UserRoleResponseDTO>> GetRolesByUserAsync(int userId)

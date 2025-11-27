@@ -16,35 +16,13 @@ namespace Blog.API.Repositories
             _connection = connectionDB.GetConnection();
         }
 
-        public async Task AddUserRoleAsync(UserRole userRole)
-        {
-            const string sql = @"
-                INSERT INTO UserRole (UserId, RoleId)
-                VALUES (@UserId, @RoleId);";
-
-            await _connection.ExecuteAsync(sql, new
-            {
-                userRole.UserId,
-                userRole.RoleId
-            });
-        }
-
-        public async Task RemoveUserRoleAsync(int userId, int roleId)
-        {
-            const string sql = @"
-                DELETE FROM UserRole
-                WHERE UserId = @UserId AND RoleId = @RoleId;";
-
-            await _connection.ExecuteAsync(sql, new { UserId = userId, RoleId = roleId });
-        }
-
         public async Task<List<UserRoleResponseDTO>> GetRolesByUserAsync(int userId)
         {
             const string sql = @"
                 SELECT ur.UserId,
-                       u.Name  AS UserName,
+                       u.Name AS UserName,
                        ur.RoleId,
-                       r.Name  AS RoleName
+                       r.Name AS RoleName
                 FROM [User] u
                 JOIN UserRole ur ON u.Id = ur.UserId
                 JOIN [Role] r    ON r.Id = ur.RoleId
@@ -58,9 +36,9 @@ namespace Blog.API.Repositories
         {
             const string sql = @"
                 SELECT ur.UserId,
-                       u.Name  AS UserName,
+                       u.Name AS UserName,
                        ur.RoleId,
-                       r.Name  AS RoleName
+                       r.Name AS RoleName
                 FROM [User] u
                 JOIN UserRole ur ON u.Id = ur.UserId
                 JOIN [Role] r    ON r.Id = ur.RoleId
