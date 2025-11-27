@@ -1,5 +1,6 @@
 ﻿using Blog.API.Controllers.InterfaceController;
 using Blog.API.Models.DTOs;
+using Blog.API.Services;
 using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,9 @@ namespace Blog.API.Controllers
     [ApiController]
     public class RoleController : ControllerBase, IRoleController
     {
-        private readonly IRoleService _roleService;
-        public RoleController(IRoleService roleService)
+        private RoleService _roleService;
+
+        public RoleController(RoleService roleService)
         {
             _roleService = roleService;
         }

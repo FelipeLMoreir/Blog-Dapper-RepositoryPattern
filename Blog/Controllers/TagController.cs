@@ -1,5 +1,6 @@
 ﻿using Blog.API.Controllers.InterfaceController;
 using Blog.API.Models.DTOs;
+using Blog.API.Services;
 using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,8 @@ namespace Blog.API.Controllers
     [ApiController]
     public class TagController : ControllerBase, ITagController
     {
-        private readonly ITagService _tagService;
-        public TagController(ITagService tagService)
+        private TagService _tagService;
+        public TagController(TagService tagService)
         {
             _tagService = tagService;
         }

@@ -10,9 +10,9 @@ namespace Blog.API.Controllers
     [ApiController]
     public class UserController : ControllerBase, IUserController
     {
-        private readonly IUserService _userService;
+        private UserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(UserService userService)
         {
             _userService = userService;
         }
