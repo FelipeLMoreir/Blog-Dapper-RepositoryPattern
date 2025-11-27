@@ -51,5 +51,30 @@ namespace Blog.API.Repositories
             await _connection.ExecuteAsync(sql, new { category.Name, category.Slug });
             //}
         }
+
+        public async Task<int> UpdateCategoryAsync(int id, Category category)
+        {
+            var sql = @"UPDATE Category 
+                        SET Name = @Name, Slug = @Slug
+                        WHERE Id = @Id";
+
+            var rows = await _connection.ExecuteAsync(sql, new
+            {
+                Id = id,
+                category.Name,
+                category.Slug
+            });
+
+            return rows; 
+        }
+
+        public async Task<int> DeleteCategoryAsync(int id)
+        {
+            var sql = "DELETE FROM Category WHERE Id = @Id";
+
+            var rows = await _connection.ExecuteAsync(sql, new { Id = id });
+
+            return rows; 
+        }
     }
 }

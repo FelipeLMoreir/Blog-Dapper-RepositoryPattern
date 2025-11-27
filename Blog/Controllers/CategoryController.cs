@@ -41,5 +41,27 @@ namespace Blog.API.Controllers
                 
             return Created();
         }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateCategory(int id, CategoryRequestDTO category)
+        {
+            var updated = await _categoryService.UpdateCategoryAsync(id, category);
+
+            if (!updated)
+                return NotFound($"Category with Id {id} not found.");
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteCategory(int id)
+        {
+            var deleted = await _categoryService.DeleteCategoryAsync(id);
+
+            if (!deleted)
+                return NotFound($"Category with Id {id} not found.");
+
+            return NoContent();
+        }
     }
 }
