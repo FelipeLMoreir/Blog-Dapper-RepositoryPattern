@@ -10,12 +10,13 @@ namespace Blog.API.Services
 {
     public class UserService : IUserService
     {
-        private UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(UserRepository userRepository)
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
+
         public async Task<List<UserResponseDTO>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllUsersAsync();
@@ -23,23 +24,40 @@ namespace Blog.API.Services
 
         public async Task CreateUserAsync(UserRequestDTO userDto)
         {
-            var slug = userDto.Name
+            var user = BuildUserFromDto(userDto);
+            await _userRepository.CreateUserAsync(user);
+        }
+
+        public async Task<bool> UpdateUserAsync(int id, UserRequestDTO userDto)
+        {
+            var user = BuildUserFromDto(userDto);
+            var rows = await _userRepository.UpdateUserAsync(id, user);
+            return rows > 0;
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            var rows = await _userRepository.DeleteUserAsync(id);
+            return rows > 0;
+        }
+
+        private static User BuildUserFromDto(UserRequestDTO dto)
+        {
+            var slug = dto.Name
                 .ToLower()
                 .Trim()
                 .Replace(" ", "-");
 
-            var passwordHash = HashPassword(userDto.PasswordPlain);
+            var passwordHash = HashPassword(dto.PasswordPlain);
 
-            var user = new User(
-                userDto.Name,
-                userDto.Email,
+            return new User(
+                dto.Name,
+                dto.Email,
                 passwordHash,
-                userDto.Bio,
-                userDto.Image,
+                dto.Bio,
+                dto.Image,
                 slug
             );
-
-            await _userRepository.CreateUserAsync(user);
         }
 
         private static string HashPassword(string password)
@@ -47,7 +65,7 @@ namespace Blog.API.Services
             using var sha = SHA256.Create();
             var bytes = Encoding.UTF8.GetBytes(password);
             var hash = sha.ComputeHash(bytes);
-            return Convert.ToHexString(hash); 
+            return Convert.ToHexString(hash);
         }
     }
 }

@@ -15,13 +15,13 @@ namespace Blog.API.Repositories
         {
             _connection = connectionDB.GetConnection();
         }
+
         public async Task<List<UserResponseDTO>> GetAllUsersAsync()
         {
-            var sql = "SELECT * FROM [User]";
-         
+            var sql = "SELECT Name, Email, Bio, Image, Slug FROM [User]";
             return (await _connection.QueryAsync<UserResponseDTO>(sql)).ToList();
-            
         }
+
         public async Task CreateUserAsync(User user)
         {
             const string sql = @"
@@ -37,6 +37,36 @@ namespace Blog.API.Repositories
                 user.Image,
                 user.Slug
             });
+        }
+
+        public async Task<int> UpdateUserAsync(int id, User user)
+        {
+            const string sql = @"
+                UPDATE [User]
+                SET Name = @Name,
+                    Email = @Email,
+                    PasswordHash = @PasswordHash,
+                    Bio = @Bio,
+                    Image = @Image,
+                    Slug = @Slug
+                WHERE Id = @Id;";
+
+            return await _connection.ExecuteAsync(sql, new { Id = id,
+                user.Name,
+                user.Email,
+                user.PasswordHash,
+                user.Bio,
+                user.Image,
+                user.Slug
+            });
+
+        }
+
+        public async Task<int> DeleteUserAsync(int id)
+        {
+            const string sql = "DELETE FROM [User] WHERE Id = @Id;";
+
+            return await _connection.ExecuteAsync(sql, new { Id = id });
         }
     }
 }

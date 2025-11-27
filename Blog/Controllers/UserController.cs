@@ -10,9 +10,9 @@ namespace Blog.API.Controllers
     [ApiController]
     public class UserController : ControllerBase, IUserController
     {
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
-        public UserController(UserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -35,6 +35,26 @@ namespace Blog.API.Controllers
         {
             await _userService.CreateUserAsync(dto);
             return Created(string.Empty, null);
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateUser(int id, [FromBody] UserRequestDTO dto)
+        {
+            var updated = await _userService.UpdateUserAsync(id, dto);
+            if (!updated)
+                return NotFound($"User with Id {id} not found.");
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            var deleted = await _userService.DeleteUserAsync(id);
+            if (!deleted)
+                return NotFound($"User with Id {id} not found.");
+
+            return NoContent();
         }
     }
 }

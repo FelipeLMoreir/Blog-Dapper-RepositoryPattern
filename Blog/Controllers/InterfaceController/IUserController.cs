@@ -7,6 +7,7 @@ namespace Blog.API.Controllers.InterfaceController
     {
         Task<ActionResult<List<UserResponseDTO>>> GetAllUsers();
         Task<ActionResult> CreateUser([FromBody] UserRequestDTO dto);
-
+        Task<ActionResult> UpdateUser(int id, [FromBody] UserRequestDTO dto);
+        Task<ActionResult> DeleteUser(int id);
     }
 }
