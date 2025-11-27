@@ -15,7 +15,7 @@ namespace Blog.API.Controllers
             _tagService = tagService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<TagResponseDTO>>> GetAll()
         {
             var tags = await _tagService.GetAllAsync();
@@ -30,7 +30,7 @@ namespace Blog.API.Controllers
             return Ok(tag);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult> Create(TagRequestDTO dto)
         {
             await _tagService.CreateAsync(dto);

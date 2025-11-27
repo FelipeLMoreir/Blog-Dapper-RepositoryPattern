@@ -15,7 +15,7 @@ namespace Blog.API.Controllers
             _roleService = roleService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<List<RoleResponseDTO>>> GetAll()
         {
             var roles = await _roleService.GetAllAsync();
@@ -30,7 +30,7 @@ namespace Blog.API.Controllers
             return Ok(role);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult> Create(RoleRequestDTO dto)
         {
             await _roleService.CreateAsync(dto);
