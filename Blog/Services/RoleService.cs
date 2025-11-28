@@ -1,5 +1,5 @@
 ﻿using Blog.API.Models;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.Role;
 using Blog.API.Repositories;
 using Blog.API.Repositories.InterfaceRepository;
 using Blog.API.Services.InterfaceService;

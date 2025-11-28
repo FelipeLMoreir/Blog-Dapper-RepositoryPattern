@@ -1,5 +1,5 @@
 ﻿using Blog.API.Models;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.User;
 using Blog.API.Repositories;
 using Blog.API.Repositories.InterfaceRepository;
 using Blog.API.Services.InterfaceService;
@@ -67,5 +67,21 @@ namespace Blog.API.Services
             var hash = sha.ComputeHash(bytes);
             return Convert.ToHexString(hash);
         }
+
+        public async Task<List<UserWithRolesDTO>> GetAllUsersWithRolesAsync()
+        {
+            var users = await _userRepository.GetAllUsersWithRolesAsync();
+
+            return users.Select(u => new UserWithRolesDTO
+            {
+                Name = u.Name,
+                Email = u.Email,
+                Bio = u.Bio,
+                Image = u.Image,
+                Slug = u.Slug,
+                Roles = u.Roles.Select(r => r.Name).ToList()
+            }).ToList();
+        }
+
     }
 }

@@ -1,8 +1,9 @@
-﻿namespace Blog.API.Models.DTOs
+﻿namespace Blog.API.Models.DTOs.Category
 {
-    public class TagResponseDTO
+    public class CategoryResponseDTO
     {
         public string Name { get; init; } = string.Empty;
         public string Slug { get; init; } = string.Empty;
+
     }
 }

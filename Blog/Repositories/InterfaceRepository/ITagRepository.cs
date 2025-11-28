@@ -1,5 +1,5 @@
 ﻿using Blog.API.Models;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.Tag;
 
 namespace Blog.API.Repositories.InterfaceRepository
 {

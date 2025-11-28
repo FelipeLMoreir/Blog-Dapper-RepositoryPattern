@@ -1,6 +1,6 @@
 ﻿using Azure.Core.Pipeline;
 using Blog.API.Models;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.Category;
 using Blog.API.Repositories;
 using Blog.API.Services.InterfaceService;
 

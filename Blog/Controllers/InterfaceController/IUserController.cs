@@ -1,4 +1,4 @@
-﻿using Blog.API.Models.DTOs;
+﻿using Blog.API.Models.DTOs.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers.InterfaceController

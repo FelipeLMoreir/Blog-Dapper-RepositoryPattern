@@ -1,6 +1,6 @@
-﻿namespace Blog.API.Models.DTOs
+﻿namespace Blog.API.Models.DTOs.Tag
 {
-    public class RoleRequestDTO
+    public class TagRequestDTO
     {
         public string Name { get; init; } = string.Empty;
     }

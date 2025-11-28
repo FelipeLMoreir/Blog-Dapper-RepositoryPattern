@@ -1,6 +1,6 @@
 ﻿using Blog.API.Data;
 using Blog.API.Models;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.User;
 using Blog.API.Repositories.InterfaceRepository;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -24,7 +24,7 @@ namespace Blog.API.Repositories
 
         public async Task CreateUserAsync(User user)
         {
-            const string sql = @"
+            var sql = @"
                 INSERT INTO [User] (Name, Email, PasswordHash, Bio, Image, Slug)
                 VALUES (@Name, @Email, @PasswordHash, @Bio, @Image, @Slug);";
 
@@ -41,7 +41,7 @@ namespace Blog.API.Repositories
 
         public async Task<int> UpdateUserAsync(int id, User user)
         {
-            const string sql = @"
+            var sql = @"
                 UPDATE [User]
                 SET Name = @Name,
                     Email = @Email,
@@ -66,34 +66,43 @@ namespace Blog.API.Repositories
 
         public async Task<int> DeleteUserAsync(int id)
         {
-            const string sql = "DELETE FROM [User] WHERE Id = @Id;";
+            var sql = "DELETE FROM [User] WHERE Id = @Id;";
 
             return await _connection.ExecuteAsync(sql, new { Id = id });
         }
 
-        public async Task<List<User>> GetAllUsersRoles()
+        public async Task<List<User>> GetAllUsersWithRolesAsync()
         {
-            var sql = @"
-                SELECT u.Name AS UserName, r.Name AS RoleName
-                FROM [User] u
-                JOIN UserRole ur ON u.Id = ur.UserId
-                JOIN Role r ON ur.RoleId = r.Id;";
-            IEnumerable<User> userRoles = new List<User>();
+            var sql = @"SELECT 
+                        u.Id, u.Name, u.Email, u.PasswordHash, u.Bio, u.Image, u.Slug,
+                        r.Id, r.Name, r.Slug
+                        FROM [User] u
+                        JOIN UserRole ur ON u.Id = ur.UserId
+                        JOIN Role r ON ur.RoleId = r.Id;";
 
-            using (var con = _connection)
-            {
-                userRoles = await con.QueryAsync<User, Role, User>(
-                    sql,
-                    (user, role) =>
+            var userDictionary = new Dictionary<int, User>();
+
+            var result = await _connection.QueryAsync<User, Role, User>(
+                sql,
+                (user, role) =>
+                {
+                    if (!userDictionary.TryGetValue(user.Id, out var userEntry))
                     {
-                        user.Roles.Add(role);
-                        return user;
-                    },
-                splitOn: "Id"
-                );
-            }
-            return userRoles.ToList();
+                        userEntry = user;
+                        userDictionary.Add(userEntry.Id, userEntry);
+                    }
+
+                    if (role != null)
+                        userEntry.addRoles(role); 
+
+                    return userEntry;
+                },
+                splitOn: "RoleId"
+            );
+
+            return userDictionary.Values.ToList();
         }
+
 
     }
 }

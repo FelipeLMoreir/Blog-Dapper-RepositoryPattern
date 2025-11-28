@@ -1,4 +1,4 @@
-﻿using Blog.API.Models.DTOs;
+﻿using Blog.API.Models.DTOs.Tag;
 
 namespace Blog.API.Services.InterfaceService
 {

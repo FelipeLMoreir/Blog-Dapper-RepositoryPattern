@@ -1,8 +1,7 @@
-﻿namespace Blog.API.Models.DTOs
+﻿namespace Blog.API.Models.DTOs.Role
 {
-    public class CategoryRequestDTO
+    public class RoleRequestDTO
     {
         public string Name { get; init; } = string.Empty;
-
     }
 }

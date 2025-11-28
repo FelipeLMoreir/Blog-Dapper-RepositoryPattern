@@ -1,5 +1,5 @@
 ﻿using Blog.API.Controllers.InterfaceController;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.User;
 using Blog.API.Services;
 using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
@@ -56,5 +56,13 @@ namespace Blog.API.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("WithRoles")]
+        public async Task<ActionResult<List<UserWithRolesDTO>>> GetAllUsersWithRoles()
+        {
+            var users = await _userService.GetAllUsersWithRolesAsync();
+            return Ok(users);
+        }
+
     }
 }

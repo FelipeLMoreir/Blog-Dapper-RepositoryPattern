@@ -1,5 +1,5 @@
 ﻿using Blog.API.Controllers.InterfaceController;
-using Blog.API.Models.DTOs;
+using Blog.API.Models.DTOs.Role;
 using Blog.API.Services;
 using Blog.API.Services.InterfaceService;
 using Microsoft.AspNetCore.Mvc;
