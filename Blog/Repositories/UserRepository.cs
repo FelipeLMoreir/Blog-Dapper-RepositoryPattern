@@ -71,38 +71,53 @@ namespace Blog.API.Repositories
             return await _connection.ExecuteAsync(sql, new { Id = id });
         }
 
-        public async Task<List<User>> GetAllUsersWithRolesAsync()
+        public async Task<List<User>> GetAllUsersRoles()
         {
-            var sql = @"SELECT 
-                        u.Id, u.Name, u.Email, u.PasswordHash, u.Bio, u.Image, u.Slug,
-                        r.Id, r.Name, r.Slug
-                        FROM [User] u
-                        JOIN UserRole ur ON u.Id = ur.UserId
-                        JOIN Role r ON ur.RoleId = r.Id;";
+            var sql = @"
+        SELECT u.Name AS UserName, r.Name AS RoleName
+        FROM [User] u
+        JOIN UserRole ur ON u.Id = ur.UserId
+        JOIN Role r ON ur.RoleId = r.Id;";
+            IEnumerable<User> userRoles = new List<User>();
 
-            var userDictionary = new Dictionary<int, User>();
-
-            var result = await _connection.QueryAsync<User, Role, User>(
-                sql,
-                (user, role) =>
-                {
-                    if (!userDictionary.TryGetValue(user.Id, out var userEntry))
+            using (var con = _connection)
+            {
+                userRoles = await con.QueryAsync<User, Role, User>(
+                    sql,
+                    (user, role) =>
                     {
-                        userEntry = user;
-                        userDictionary.Add(userEntry.Id, userEntry);
-                    }
-
-                    if (role != null)
-                        userEntry.addRoles(role); 
-
-                    return userEntry;
-                },
-                splitOn: "RoleId"
-            );
-
-            return userDictionary.Values.ToList();
+                        user.Roles.Add(role);
+                        return user;
+                    },
+                splitOn: "Id"
+                );
+            }
+            return userRoles.ToList();
         }
 
+        public async Task<List<Role>> GetAllRolesUsers()
+        {
+            var sql = @"
+        SELECT r.Name AS RoleName, u.Name AS UserName
+        FROM [Role] r
+        JOIN UserRole ur ON r.Id = ur.RoleId
+        JOIN [User] u ON ur.UserId = u.Id;";
 
+            IEnumerable<Role> roleUsers = new List<Role>();
+
+            using (var con = _connection)
+            {
+                roleUsers = await con.QueryAsync<Role, User, Role>(
+                    sql,
+                    (role, user) =>
+                    {
+                        role.Users.Add(user);
+                        return role;
+                    },
+                    splitOn: "Id"
+                );
+            }
+            return roleUsers.ToList();
+        }
     }
 }

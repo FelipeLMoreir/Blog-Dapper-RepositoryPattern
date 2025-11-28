@@ -118,5 +118,56 @@ namespace Blog.API.Repositories
                 throw new Exception(ex.StackTrace);
             }
         }
+
+        public async Task<List<Post>> GetAllPostsTags()
+        {
+            var sql = @"
+        SELECT p.Title AS PostTitle, t.Name AS TagName
+        FROM Post p
+        JOIN PostTag pt ON p.Id = pt.PostId
+        JOIN Tag t ON pt.TagId = t.Id;";
+
+            IEnumerable<Post> postTags = new List<Post>();
+
+            using (var con = _connection)
+            {
+                postTags = await con.QueryAsync<Post, Tag, Post>(
+                    sql,
+                    (post, tag) =>
+                    {
+                        post.Tags.Add(tag);
+                        return post;
+                    },
+                    splitOn: "Id"
+                );
+            }
+            return postTags.ToList();
+        }
+
+        public async Task<List<Tag>> GetAllTagsPosts()
+        {
+            var sql = @"
+        SELECT t.Id, t.Name AS TagName, p.Id AS PostId, p.Title AS PostTitle
+        FROM Tag t
+        JOIN PostTag pt ON t.Id = pt.TagId
+        JOIN Post p ON pt.PostId = p.Id;";
+
+            IEnumerable<Tag> tagPosts = new List<Tag>();
+
+            using (var con = _connection)
+            {
+                tagPosts = await con.QueryAsync<Tag, Post, Tag>(
+                    sql,
+                    (tag, post) =>
+                    {
+                        tag.Posts.Add(post);
+                        return tag;
+                    },
+                    splitOn: "PostId"
+                );
+            }
+            return tagPosts.ToList();
+        }
+
     }
 }

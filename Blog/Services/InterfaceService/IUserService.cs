@@ -1,4 +1,6 @@
-﻿using Blog.API.Models.DTOs.User;
+﻿using Blog.API.Models;
+using Blog.API.Models.DTOs.Role;
+using Blog.API.Models.DTOs.User;
 
 namespace Blog.API.Services.InterfaceService
 {
@@ -8,5 +10,8 @@ namespace Blog.API.Services.InterfaceService
         Task CreateUserAsync(UserRequestDTO dto);
         Task<bool> UpdateUserAsync(int id, UserRequestDTO dto);
         Task<bool> DeleteUserAsync(int id);
+        Task<List<UserWithRolesDTO>> GetAllUsersWithRolesAsync();
+        Task<List<RoleWithUsersDTO>> GetAllRolesWithUsersAsync();
+
     }
 }

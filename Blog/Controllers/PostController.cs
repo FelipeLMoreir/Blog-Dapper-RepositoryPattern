@@ -1,6 +1,7 @@
 ﻿using Blog.API.Controllers.InterfaceController;
+using Blog.API.Models;
 using Blog.API.Models.DTOs.Post;
-using Blog.API.Services.InterfaceService;
+using Blog.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers
@@ -88,5 +89,38 @@ namespace Blog.API.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpGet("GetAllTags")]
+        public async Task<ActionResult<List<Post>>> GetAllPostsTags()
+        {
+            try
+            {
+                var posts = await _postService.GetAllPostsTags();
+                if (posts is null) return NoContent();
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error posts with tags");
+                return Problem(ex.Message);
+            }
+        }
+
+        [HttpGet("GetAllTagsPosts")]
+        public async Task<ActionResult<List<Tag>>> GetAllTagsPosts()
+        {
+            try
+            {
+                var tags = await _postService.GetAllTagsPosts();
+                if (tags is null) return NoContent();
+                return Ok(tags);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error tags with posts");
+                return Problem(ex.Message);
+            }
+        }
+
     }
 }

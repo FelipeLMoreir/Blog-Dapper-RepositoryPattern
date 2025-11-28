@@ -1,4 +1,5 @@
-﻿using Blog.API.Models.DTOs.Post;
+﻿using Blog.API.Models;
+using Blog.API.Models.DTOs.Post;
 
 namespace Blog.API.Services.InterfaceService
 {
@@ -8,5 +9,8 @@ namespace Blog.API.Services.InterfaceService
         Task CreatePostAsync(PostRequestDTO post);
         Task UpdatePostAsync(int id, PostRequestDTO post);
         Task DeletePostAsync(int id);
+        Task<List<Post>> GetAllPostsTags();
+        Task<List<Tag>> GetAllTagsPosts();
+
     }
 }

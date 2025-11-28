@@ -1,4 +1,5 @@
 ﻿using Blog.API.Models;
+using Blog.API.Models.DTOs.Role;
 using Blog.API.Models.DTOs.User;
 using Blog.API.Repositories;
 using Blog.API.Repositories.InterfaceRepository;
@@ -70,7 +71,7 @@ namespace Blog.API.Services
 
         public async Task<List<UserWithRolesDTO>> GetAllUsersWithRolesAsync()
         {
-            var users = await _userRepository.GetAllUsersWithRolesAsync();
+            var users = await _userRepository.GetAllUsersRoles();
 
             return users.Select(u => new UserWithRolesDTO
             {
@@ -79,7 +80,36 @@ namespace Blog.API.Services
                 Bio = u.Bio,
                 Image = u.Image,
                 Slug = u.Slug,
-                Roles = u.Roles.Select(r => r.Name).ToList()
+                Roles = u.Roles.Select(r => new RoleWithUsersDTO
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Slug = r.Slug,
+                    Users = r.Users.Select(u => new UserWithRolesDTO
+                    {
+                        Name = u.Name,
+                        Email = u.Email,
+                        Bio = u.Bio,
+                        Image = u.Image,
+                        Slug = u.Slug
+                    }).ToList()
+                }).ToList()
+            }).ToList();
+        }
+        public async Task<List<RoleWithUsersDTO>> GetAllRolesWithUsersAsync()
+        {
+            var roles = await _userRepository.GetAllRolesUsers(); 
+
+            return roles.Select(r => new RoleWithUsersDTO
+            {
+                Id = r.Id,
+                Name = r.Name,
+                Slug = r.Slug,
+                Users = r.Users?.Select(u => new UserWithRolesDTO
+                {
+                    Id = u.Id,
+                    Name = u.Name
+                }).ToList() ?? new List<UserWithRolesDTO>()
             }).ToList();
         }
 

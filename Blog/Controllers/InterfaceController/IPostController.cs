@@ -1,4 +1,5 @@
-﻿using Blog.API.Models.DTOs.Post;
+﻿using Blog.API.Models;
+using Blog.API.Models.DTOs.Post;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers.InterfaceController
@@ -10,5 +11,8 @@ namespace Blog.API.Controllers.InterfaceController
         Task<ActionResult> CreatePost(PostRequestDTO post);
         Task<ActionResult> UpdatePost(int id, PostRequestDTO post);
         Task<ActionResult> DeletePost(int id);
+        Task<ActionResult<List<Post>>> GetAllPostsTags();
+        Task<ActionResult<List<Tag>>> GetAllTagsPosts();
+
     }
 }

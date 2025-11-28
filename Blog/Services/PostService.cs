@@ -1,9 +1,10 @@
 ﻿using Blog.API.Models;
 using Blog.API.Models.DTOs.Post;
 using Blog.API.Repositories;
+using Blog.API.Services.InterfaceService;
 using System.Text.RegularExpressions;
 
-namespace Blog.API.Services.InterfaceService
+namespace Blog.API.Services
 {
     public class PostService : IPostService
     {
@@ -89,5 +90,11 @@ namespace Blog.API.Services.InterfaceService
             str = Regex.Replace(str, @"\s+", "-").Trim('-');
             return str;
         }
+        public async Task<List<Post>> GetAllPostsTags()
+            => await _postRepository.GetAllPostsTags();
+
+        public async Task<List<Tag>> GetAllTagsPosts()
+            => await _postRepository.GetAllTagsPosts();
+
     }
 }

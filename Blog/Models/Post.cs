@@ -13,6 +13,7 @@ namespace Blog.API.Models
         public string Slug { get; private set; }
         public DateTime CreateDate { get; private set; }
         public DateTime LastUpdateDate { get; private set; }
+        public List<Tag> Tags { get; private set; } = [];
 
         public Post(int categoryId, int authorId, string title, string summary, string body, string slug)
         {

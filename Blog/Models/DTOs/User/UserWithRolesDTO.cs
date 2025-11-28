@@ -1,13 +1,16 @@
-﻿namespace Blog.API.Models.DTOs.User
+﻿using Blog.API.Models.DTOs.Role;
+
+namespace Blog.API.Models.DTOs.User
 {
     public class UserWithRolesDTO
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Bio { get; set; }
-        public string Image { get; set; }
-        public string Slug { get; set; }
-        public List<string> Roles { get; set; }
+        public int Id { get; init; } = 0;
+        public string Name { get; init; } = string.Empty;
+        public string Email { get; init; } = string.Empty;
+        public string Bio { get; init; } = string.Empty;
+        public string Image { get; init; } = string.Empty;
+        public string Slug { get; init; } = string.Empty;
+        public List<RoleWithUsersDTO> Roles { get; init; } = new();
     }
 
 }

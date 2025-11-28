@@ -1,4 +1,6 @@
 ﻿using Blog.API.Controllers.InterfaceController;
+using Blog.API.Models;
+using Blog.API.Models.DTOs.Role;
 using Blog.API.Models.DTOs.User;
 using Blog.API.Services;
 using Blog.API.Services.InterfaceService;
@@ -62,6 +64,13 @@ namespace Blog.API.Controllers
         {
             var users = await _userService.GetAllUsersWithRolesAsync();
             return Ok(users);
+        }
+
+        [HttpGet("WithUsers")]
+        public async Task<ActionResult<List<RoleWithUsersDTO>>> GetAllRolesWithUsers()
+        {
+            var roles = await _userService.GetAllRolesWithUsersAsync();
+            return Ok(roles);
         }
 
     }
